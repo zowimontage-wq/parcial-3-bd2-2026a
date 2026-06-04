@@ -1,0 +1,63 @@
+erDiagram
+    GENERO   ||--o{ PELICULA : clasifica
+    PELICULA ||--o{ FUNCION  : "se_proyecta_en"
+    SALA     ||--o{ FUNCION  : alberga
+    SALA     ||--o{ BUTACA   : tiene
+    FUNCION  ||--o{ BOLETO   : genera
+    BUTACA   ||--o{ BOLETO   : "se_vende_en"
+    CLIENTE  ||--o{ VENTA    : realiza
+    VENTA    ||--o{ BOLETO   : incluye
+
+    GENERO {
+        int id_genero PK
+        varchar nombre
+    }
+    PELICULA {
+        int id_pelicula PK
+        varchar titulo
+        int id_genero FK
+        smallint duracion_min
+        varchar clasificacion
+        text sinopsis
+        varchar poster_url
+        boolean activa
+    }
+    SALA {
+        int id_sala PK
+        varchar nombre
+        varchar formato
+    }
+    BUTACA {
+        int id_butaca PK
+        int id_sala FK
+        char fila
+        smallint numero
+    }
+    FUNCION {
+        int id_funcion PK
+        int id_pelicula FK
+        int id_sala FK
+        date fecha
+        time hora
+        decimal tarifa
+    }
+    CLIENTE {
+        int id_cliente PK
+        varchar nombre
+        varchar documento
+        varchar email
+        varchar telefono
+    }
+    VENTA {
+        int id_venta PK
+        datetime fecha_venta
+        int id_cliente FK
+        decimal total
+    }
+    BOLETO {
+        int id_boleto PK
+        int id_venta FK
+        int id_funcion FK
+        int id_butaca FK
+        decimal precio
+    }
