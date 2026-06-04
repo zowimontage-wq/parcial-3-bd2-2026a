@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Nueva sala{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4">Nueva sala</h1>
+
+<form method="post" class="row g-3" style="max-width:560px;">
+  <div class="col-12">
+    <label class="form-label">Nombre</label>
+    <input type="text" name="nombre" class="form-control" required placeholder="Ej: Sala 4">
+  </div>
+
+  <div class="col-md-6">
+    <label class="form-label">Formato</label>
+    <select name="formato" class="form-select">
+      <option value="2D">2D</option>
+      <option value="3D">3D</option>
+      <option value="IMAX">IMAX</option>
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label">Filas</label>
+    <input type="number" name="filas" class="form-control" min="1" max="26" value="5" required>
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label">Butacas/fila</label>
+    <input type="number" name="por_fila" class="form-control" min="1" max="30" value="8" required>
+  </div>
+
+  <div class="col-12 text-muted small">
+    Las butacas se generan solas: filas A, B, C… y números 1, 2, 3…
+  </div>
+
+  <div class="col-12">
+    <button class="btn btn-primary">Crear sala</button>
+    <a class="btn btn-link" href="{{ url_for('salas_list') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}
