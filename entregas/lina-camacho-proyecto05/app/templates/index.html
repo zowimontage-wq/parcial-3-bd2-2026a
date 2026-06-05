@@ -1,42 +1,49 @@
 {% extends "base.html" %}
-{% block title %}Inicio{% endblock %}
+{% block title %}Cartelera{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">Panel del cine</h1>
-
-<div class="row g-3 mb-4">
-  <div class="col-6 col-md">
-    <div class="card text-center shadow-sm"><div class="card-body">
-      <div class="display-6">{{ stats.peliculas }}</div><div class="text-muted">Películas</div>
-    </div></div>
-  </div>
-  <div class="col-6 col-md">
-    <div class="card text-center shadow-sm"><div class="card-body">
-      <div class="display-6">{{ stats.salas }}</div><div class="text-muted">Salas</div>
-    </div></div>
-  </div>
-  <div class="col-6 col-md">
-    <div class="card text-center shadow-sm"><div class="card-body">
-      <div class="display-6">{{ stats.funciones }}</div><div class="text-muted">Funciones</div>
-    </div></div>
-  </div>
-  <div class="col-6 col-md">
-    <div class="card text-center shadow-sm"><div class="card-body">
-      <div class="display-6">{{ stats.boletos }}</div><div class="text-muted">Boletos vendidos</div>
-    </div></div>
-  </div>
-  <div class="col-12 col-md">
-    <div class="card text-center shadow-sm bg-success-subtle"><div class="card-body">
-      <div class="display-6">${{ '{:,.0f}'.format(stats.recaudacion) }}</div>
-      <div class="text-muted">Recaudación</div>
-    </div></div>
-  </div>
+<!-- Panel de cifras -->
+<div class="row g-3 mb-5">
+  <div class="col-6 col-md"><div class="stat-card"><div class="num">{{ stats.peliculas }}</div><div class="lbl">Películas</div></div></div>
+  <div class="col-6 col-md"><div class="stat-card"><div class="num">{{ stats.salas }}</div><div class="lbl">Salas</div></div></div>
+  <div class="col-6 col-md"><div class="stat-card"><div class="num">{{ stats.funciones }}</div><div class="lbl">Funciones</div></div></div>
+  <div class="col-6 col-md"><div class="stat-card"><div class="num">{{ stats.boletos }}</div><div class="lbl">Boletos</div></div></div>
+  <div class="col-12 col-md"><div class="stat-card"><div class="num">${{ '{:,.0f}'.format(stats.recaudacion) }}</div><div class="lbl">Recaudación</div></div></div>
 </div>
 
-<h2 class="h4 mb-3">Próximas funciones</h2>
+<!-- Cartelera -->
+<h2 class="section-title">Cartelera <span style="font-size:16px;font-weight:normal;color:var(--color-text-muted)">| Barrancabermeja</span></h2>
+<div class="movie-grid mb-5">
+  {% for p in cartelera %}
+  <article class="movie-card">
+    {% if p.poster_url %}
+    <div class="movie-poster" style="background-image:url('{{ p.poster_url }}')">
+      <div class="badge-genre">{{ p.genero }}</div>
+    </div>
+    {% else %}
+    <div class="movie-poster placeholder">
+      <i class="fa fa-film"></i>
+      <div class="badge-genre">{{ p.genero }}</div>
+    </div>
+    {% endif %}
+    <div class="card-body">
+      <h3 class="title" title="{{ p.titulo }}">{{ p.titulo }}</h3>
+      <p class="meta">{{ p.clasificacion }} · {{ p.duracion_min }} min</p>
+      <a href="{{ url_for('funciones_list') }}" class="btn btn-primary btn-sm w-100">
+        <i class="fa fa-ticket"></i> Ver funciones
+      </a>
+    </div>
+  </article>
+  {% else %}
+  <p class="text-muted">No hay películas en cartelera.</p>
+  {% endfor %}
+</div>
+
+<!-- Próximas funciones -->
+<h2 class="section-title">Próximas funciones</h2>
 <div class="table-responsive">
   <table class="table table-hover align-middle">
-    <thead><tr><th>Película</th><th>Sala</th><th>Fecha</th><th>Hora</th><th class="text-end">Tarifa</th></tr></thead>
+    <thead><tr><th>Película</th><th>Sala</th><th>Fecha</th><th>Hora</th><th class="text-end">Tarifa</th><th></th></tr></thead>
     <tbody>
       {% for f in proximas %}
       <tr>
@@ -45,9 +52,10 @@
         <td>{{ f.fecha }}</td>
         <td>{{ f.hora }}</td>
         <td class="text-end">${{ '{:,.0f}'.format(f.tarifa) }}</td>
+        <td class="text-end"><a class="btn btn-sm btn-success" href="{{ url_for('funcion_venta', id=f.id_funcion) }}">Vender</a></td>
       </tr>
       {% else %}
-      <tr><td colspan="5" class="text-center text-muted">No hay funciones programadas.</td></tr>
+      <tr><td colspan="6" class="text-center text-muted">No hay funciones programadas.</td></tr>
       {% endfor %}
     </tbody>
   </table>
