@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Programar función{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4">Programar función</h1>
+
+<form method="post" class="row g-3" style="max-width:620px;">
+  <div class="col-md-7">
+    <label class="form-label">Película</label>
+    <select name="id_pelicula" class="form-select" required>
+      {% for p in peliculas %}
+      <option value="{{ p.id_pelicula }}">{{ p.titulo }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-md-5">
+    <label class="form-label">Sala</label>
+    <select name="id_sala" class="form-select" required>
+      {% for s in salas %}
+      <option value="{{ s.id_sala }}">{{ s.nombre }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-md-4">
+    <label class="form-label">Fecha</label>
+    <input type="date" name="fecha" class="form-control" required>
+  </div>
+
+  <div class="col-md-4">
+    <label class="form-label">Hora</label>
+    <input type="time" name="hora" class="form-control" required>
+  </div>
+
+  <div class="col-md-4">
+    <label class="form-label">Tarifa</label>
+    <input type="number" name="tarifa" class="form-control" min="0" step="100" value="9000" required>
+  </div>
+
+  <div class="col-12">
+    <button class="btn btn-primary">Programar</button>
+    <a class="btn btn-link" href="{{ url_for('funciones_list') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}
