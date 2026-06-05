@@ -1,4 +1,5 @@
 USE cine;
+SET NAMES utf8mb4;
 
 INSERT INTO genero (nombre) VALUES
   ('Acción'),          -- 1
