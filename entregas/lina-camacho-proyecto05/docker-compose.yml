@@ -1,0 +1,45 @@
+# Levanta MySQL 8 (y la app) sin instalar nada nativo.
+#
+#   docker compose up           -> app en http://localhost:5000  (app + BD)
+#   docker compose up db         -> solo la base de datos (para correr la app a mano)
+#   docker compose down -v       -> borra todo y recarga los datos de prueba al volver a subir
+#
+# La BD se inicializa sola con los scripts de ./ddl la primera vez que arranca.
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: cine-db
+    command: --skip-character-set-client-handshake --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: cine123
+      MYSQL_DATABASE: cine
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./ddl:/docker-entrypoint-initdb.d:ro   # carga 01-crear-bd.sql y 02-datos-prueba.sql
+      - cine-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pcine123"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  app:
+    build: ./app
+    container_name: cine-app
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_USER: root
+      DB_PASSWORD: cine123
+      DB_NAME: cine
+      SECRET_KEY: cine-secret
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  cine-data:
