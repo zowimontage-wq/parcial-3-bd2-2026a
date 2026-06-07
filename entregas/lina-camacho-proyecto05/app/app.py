@@ -363,5 +363,61 @@ def clientes_nueva():
     return render_template("clientes/form.html")
 
 
+# ============================================================
+#  Reportes (RF7)
+# ============================================================
+@app.route("/reportes")
+def reportes():
+    # Funciones más vendidas: boletos y recaudación por función
+    mas_vendidas = db.query(
+        """
+        SELECT f.id_funcion, p.titulo, s.nombre AS sala, f.fecha, f.hora,
+               COUNT(b.id_boleto) AS boletos,
+               COALESCE(SUM(b.precio), 0) AS recaudado,
+               (SELECT COUNT(*) FROM butaca bu WHERE bu.id_sala = f.id_sala) AS capacidad
+        FROM funcion f
+        JOIN pelicula p ON p.id_pelicula = f.id_pelicula
+        JOIN sala s ON s.id_sala = f.id_sala
+        LEFT JOIN boleto b ON b.id_funcion = f.id_funcion
+        GROUP BY f.id_funcion
+        ORDER BY boletos DESC, recaudado DESC
+        LIMIT 10
+        """
+    )
+    # Recaudación por día (según fecha de la venta)
+    recaudacion_dia = db.query(
+        """
+        SELECT DATE(v.fecha_venta) AS dia,
+               COUNT(DISTINCT v.id_venta) AS ventas,
+               COUNT(b.id_boleto) AS boletos,
+               COALESCE(SUM(b.precio), 0) AS recaudado
+        FROM venta v
+        LEFT JOIN boleto b ON b.id_venta = v.id_venta
+        GROUP BY DATE(v.fecha_venta)
+        ORDER BY dia DESC
+        """
+    )
+    # Películas más taquilleras (bonus)
+    top_peliculas = db.query(
+        """
+        SELECT p.titulo,
+               COUNT(b.id_boleto) AS boletos,
+               COALESCE(SUM(b.precio), 0) AS recaudado
+        FROM pelicula p
+        JOIN funcion f ON f.id_pelicula = p.id_pelicula
+        JOIN boleto b ON b.id_funcion = f.id_funcion
+        GROUP BY p.id_pelicula
+        ORDER BY recaudado DESC
+        LIMIT 5
+        """
+    )
+    return render_template(
+        "reportes/index.html",
+        mas_vendidas=mas_vendidas,
+        recaudacion_dia=recaudacion_dia,
+        top_peliculas=top_peliculas,
+    )
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
