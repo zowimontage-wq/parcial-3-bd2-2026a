@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Carrito{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0"><i class="fa fa-cart-shopping"></i> Tu carrito</h1>
+  <a href="{{ url_for('confiteria') }}" class="btn btn-outline-light btn-sm">Seguir comprando</a>
+</div>
+
+{% if items %}
+<div class="table-responsive">
+  <table class="table align-middle">
+    <thead>
+      <tr><th>Producto</th><th>Personalización</th>
+          <th class="text-end">CINE+</th><th class="text-end">Otros medios</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for it in items %}
+      <tr>
+        <td class="fw-bold">{{ it.nombre }}</td>
+        <td class="small text-secondary">
+          {% for e in it.elecciones %}{{ e.grupo }}: {{ e.opcion }}{% if not loop.last %} · {% endif %}{% endfor %}
+          {% if not it.elecciones %}<span class="text-muted">—</span>{% endif %}
+        </td>
+        <td class="text-end">${{ '{:,.0f}'.format(it.precio_cineplus) }}</td>
+        <td class="text-end">${{ '{:,.0f}'.format(it.precio_normal) }}</td>
+        <td class="text-end">
+          <form method="post" action="{{ url_for('carrito_eliminar', idx=loop.index0) }}">
+            <button class="btn btn-sm btn-outline-danger"><i class="fa fa-trash"></i></button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr class="fw-bold border-top">
+        <td colspan="2" class="text-end">Total</td>
+        <td class="text-end text-danger">${{ '{:,.0f}'.format(total_cineplus) }}</td>
+        <td class="text-end">${{ '{:,.0f}'.format(total_normal) }}</td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<div class="d-flex justify-content-end gap-2">
+  <form method="post" action="{{ url_for('carrito_vaciar') }}">
+    <button class="btn btn-outline-secondary">Vaciar carrito</button>
+  </form>
+</div>
+{% else %}
+<div class="text-center text-muted py-5">
+  <i class="fa fa-cart-shopping fa-3x mb-3"></i>
+  <p>Tu carrito está vacío.</p>
+  <a href="{{ url_for('confiteria') }}" class="btn btn-danger">Ir a la confitería</a>
+</div>
+{% endif %}
+{% endblock %}

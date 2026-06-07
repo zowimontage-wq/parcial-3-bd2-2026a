@@ -17,7 +17,11 @@
     <a href="{{ url_for('salas_list') }}">Salas</a>
     <a href="{{ url_for('funciones_list') }}">Funciones</a>
     <a href="{{ url_for('clientes_list') }}">Clientes</a>
+    <a href="{{ url_for('confiteria') }}"><i class="fa fa-popcorn"></i> Confitería</a>
     <a href="{{ url_for('reportes') }}">Reportes</a>
+    <a href="{{ url_for('carrito') }}"><i class="fa fa-cart-shopping"></i> Carrito
+      {% if carrito_count %}<span class="badge bg-danger">{{ carrito_count }}</span>{% endif %}
+    </a>
   </nav>
 </header>
 

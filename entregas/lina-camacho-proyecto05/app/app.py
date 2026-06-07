@@ -5,7 +5,7 @@ App web en Flask conectada a MySQL.
 """
 import os
 import mysql.connector
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from dotenv import load_dotenv
 
 import db
@@ -361,6 +361,110 @@ def clientes_nueva():
             else:
                 flash(f"No se pudo registrar: {e.msg}", "danger")
     return render_template("clientes/form.html")
+
+
+# ============================================================
+#  Confitería (módulo extra) — catálogo + carrito en sesión
+# ============================================================
+def _producto_conf(id):
+    """Trae un producto de confitería con sus grupos de opciones."""
+    producto = db.query(
+        "SELECT * FROM producto_confiteria WHERE id_producto=%s", (id,), fetchone=True
+    )
+    if not producto:
+        return None, []
+    grupos = db.query(
+        "SELECT * FROM grupo_opcion WHERE id_producto=%s ORDER BY orden, id_grupo", (id,)
+    )
+    for g in grupos:
+        g["opciones"] = db.query(
+            "SELECT * FROM opcion WHERE id_grupo=%s ORDER BY id_opcion", (g["id_grupo"],)
+        )
+    return producto, grupos
+
+
+@app.route("/confiteria")
+def confiteria():
+    productos = db.query(
+        "SELECT * FROM producto_confiteria WHERE activo=1 ORDER BY id_producto"
+    )
+    return render_template("confiteria/list.html", productos=productos)
+
+
+@app.route("/confiteria/<int:id>")
+def confiteria_detalle(id):
+    producto, grupos = _producto_conf(id)
+    if not producto:
+        flash("Producto no encontrado.", "danger")
+        return redirect(url_for("confiteria"))
+    return render_template("confiteria/detalle.html", producto=producto, grupos=grupos)
+
+
+@app.route("/confiteria/<int:id>/agregar", methods=["POST"])
+def confiteria_agregar(id):
+    producto, grupos = _producto_conf(id)
+    if not producto:
+        flash("Producto no encontrado.", "danger")
+        return redirect(url_for("confiteria"))
+
+    # Recalcular el precio en el servidor a partir de las opciones elegidas.
+    extra = 0
+    elecciones = []
+    for g in grupos:
+        sel = request.form.get(f"grupo_{g['id_grupo']}")
+        opcion = next((o for o in g["opciones"] if str(o["id_opcion"]) == sel), None)
+        if opcion:
+            extra += float(opcion["delta_precio"])
+            elecciones.append({"grupo": g["nombre"], "opcion": opcion["nombre"]})
+
+    item = {
+        "id_producto": producto["id_producto"],
+        "nombre": producto["nombre"],
+        "elecciones": elecciones,
+        "precio_normal": float(producto["precio_normal"]) + extra,
+        "precio_cineplus": float(producto["precio_cineplus"]) + extra,
+    }
+    carrito = session.get("carrito", [])
+    carrito.append(item)
+    session["carrito"] = carrito
+    flash(f"{producto['nombre']} agregado al carrito.", "success")
+    return redirect(url_for("confiteria"))
+
+
+@app.route("/carrito")
+def carrito():
+    items = session.get("carrito", [])
+    total_normal = sum(i["precio_normal"] for i in items)
+    total_cineplus = sum(i["precio_cineplus"] for i in items)
+    return render_template(
+        "confiteria/carrito.html",
+        items=items,
+        total_normal=total_normal,
+        total_cineplus=total_cineplus,
+    )
+
+
+@app.route("/carrito/eliminar/<int:idx>", methods=["POST"])
+def carrito_eliminar(idx):
+    carrito = session.get("carrito", [])
+    if 0 <= idx < len(carrito):
+        quitado = carrito.pop(idx)
+        session["carrito"] = carrito
+        flash(f"{quitado['nombre']} quitado del carrito.", "info")
+    return redirect(url_for("carrito"))
+
+
+@app.route("/carrito/vaciar", methods=["POST"])
+def carrito_vaciar():
+    session.pop("carrito", None)
+    flash("Carrito vaciado.", "info")
+    return redirect(url_for("carrito"))
+
+
+@app.context_processor
+def inject_carrito_count():
+    """Para mostrar el contador del carrito en el nav de todas las páginas."""
+    return {"carrito_count": len(session.get("carrito", []))}
 
 
 # ============================================================
