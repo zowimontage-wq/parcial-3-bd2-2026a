@@ -17,14 +17,15 @@ INSERT INTO genero (nombre) VALUES
   ('Fantasía');        -- 13
 
 INSERT INTO pelicula (titulo, id_genero, duracion_min, clasificacion, sinopsis, activa) VALUES
-  ('Dunas del Tiempo',         6, 155, 'PG-13', 'Un viaje épico a través de mundos desérticos.', TRUE),
-  ('Risas en la Oficina',      2,  98, 'PG',    'Comedia sobre el caos de un lunes cualquiera.', TRUE),
-  ('La Última Carta',          3, 120, 'PG-13', 'Un drama familiar contado a través de cartas.', TRUE),
-  ('Sombras en la Niebla',     4, 105, 'R',     'Terror psicológico en un pueblo aislado.',      TRUE),
-  ('El Reino Animado',         5,  92, 'G',     'Aventura animada para toda la familia.',        TRUE),
-  ('Persecución Final',        1, 130, 'PG-13', 'Acción trepidante de principio a fin.',         TRUE),
-  ('Corazón Valiente del Norte',3, 142,'PG-13', 'Épica histórica de honor y sacrificio.',        TRUE),
-  ('Galaxia Perdida',          6, 118, 'PG',    'Una nave busca el camino de regreso a casa.',   TRUE);
+  ('TOY STORY 5',         6, 155, 'PG', 'Los juguetes están de regreso y esta vez, el propósito de jugar de Buzz Lightyear, Woody, Jessie y el resto del grupo se ve amenazado cuando se enfrentan a Lilypad, una nueva tableta que llega con sus propias ideas disruptivas sobre lo que es mejor para su niña, Bonnie. ¿Volverá el juego a ser como antes?', TRUE),
+  ('SCARY MOVIE 6',      2,  94, 'R',    'Dos amigos se ven envueltos otra vez en el caos con asesinos, monstruos y criaturas sobrenaturales.', TRUE),
+  ('AMOS DEL UNIVERSO',          3, 140, 'PG-13', 'He-Man, el hombre más poderoso del universo, va contra el malvado Skeletor para salvar el planeta Eternia y proteger los secretos del Castillo Grayskull.', TRUE),
+  ('MICHAEL',     4, 127, 'PG-13',     'Michael es un retrato íntimo de la vida y el legado de uno de los artistas más influyentes que el mundo haya conocido. Protagonizada por Jaafar Jackson en su debut cinematográfico, quien muestra la historia de la vida de Michael Jackson desde el descubrimiento de su extraordinario talento como líder de los Jackson Five hasta convertirse en el innegable artista visionario cuya ambición creativa impulsó una búsqueda incansable para ser el artista más grande del mundo.',      TRUE),
+  ('El Afinador',         5,  109, 'R',     'Henry (Dustin Hoffman) es un veterano afinador de pianos que está perdiendo la audición. A su lado trabaja Niki (Leo Woodall), un joven aprendiz tímido y retraído, antiguo niño prodigio del piano que padece hiperacusia, una rara condición que le provoca percibir los sonidos a un volumen exageradamente alto, juntos forman la mejor pareja de afinadores de pianos de la ciudad. La condición de Niki, lejos de ser solo una carga, encierra una inesperada ventaja: una gran habilidad para abrir cajas fuertes, lo que pone su vida patas arriba.',        TRUE),
+  ('Backrooms',        1, 105, '15', '
+Una extraña puerta aparece en el sótano de una sala de exposición de muebles.',         TRUE),
+  ('El Diablo Viste a la Moda 2',3, 119,'PG-13', 'Casi veinte años después de dar vida a los icónicos personajes Miranda, Andy, Emily y Nigel; Meryl Streep, Anne Hathaway, Emily Blunt y Stanley Tucci regresan a las elegantes calles de Nueva York y a las sofisticadas oficinas de la revista Runway en la esperada secuela del fenómeno de 2006 que marcó a toda una generación.',        TRUE),
+  ('El Día de la Revelación',          6, 145, 'PG-13',    'Un evento global sin precedentes ocurre cuando se confirma oficialmente la presencia de inteligencia no humana en la Tierra, desencadenando una serie de encuentros cercanos que cambian el rumbo de la humanidad.',   TRUE);
 
 INSERT INTO sala (nombre, formato) VALUES
   ('Sala 1', '2D'),   -- 1
