@@ -12,7 +12,11 @@
   </div>
 
   <div class="col-md-6">
+<<<<<<< HEAD
     <label class="form-label">Género principal</label>
+=======
+    <label class="form-label">Género</label>
+>>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51
     <select name="id_genero" class="form-select" required>
       {% for g in generos %}
       <option value="{{ g.id_genero }}"
@@ -21,6 +25,7 @@
     </select>
   </div>
 
+<<<<<<< HEAD
   <div class="col-md-6">
     <label class="form-label">Géneros adicionales</label>
     <div class="d-flex flex-wrap gap-2 mt-1">
@@ -36,6 +41,8 @@
     </div>
   </div>
 
+=======
+>>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51
   <div class="col-md-3">
     <label class="form-label">Duración (min)</label>
     <input type="number" name="duracion_min" class="form-control" min="1" required
@@ -73,4 +80,8 @@
     <a class="btn btn-link" href="{{ url_for('peliculas_list') }}">Cancelar</a>
   </div>
 </form>
+<<<<<<< HEAD
 {% endblock %}
+=======
+{% endblock %}
+>>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51

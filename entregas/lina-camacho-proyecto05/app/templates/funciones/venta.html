@@ -9,6 +9,7 @@
 
 <div class="card mb-4"><div class="card-body">
   <strong>{{ funcion.titulo }}</strong> &middot; {{ funcion.sala }} &middot;
+<<<<<<< HEAD
   {{ funcion.fecha }} &middot; Tarifa: ${{ '{:,.0f}'.format(funcion.tarifa) }}
 </div></div>
 
@@ -27,6 +28,12 @@
   </div>
 </div>
 
+=======
+  {{ funcion.fecha }} {{ funcion.hora }} &middot;
+  Tarifa: ${{ '{:,.0f}'.format(funcion.tarifa) }}
+</div></div>
+
+>>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51
 <form method="post" id="form-venta">
   <div class="mb-3" style="max-width:420px;">
     <label class="form-label">Cliente (opcional)</label>
@@ -86,4 +93,8 @@
     document.getElementById('total').textContent = (n * tarifa).toLocaleString();
   }
 </script>
+<<<<<<< HEAD
 {% endblock %}
+=======
+{% endblock %}
+>>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51

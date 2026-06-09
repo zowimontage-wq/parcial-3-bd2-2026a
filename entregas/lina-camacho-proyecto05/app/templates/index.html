@@ -17,15 +17,26 @@
   {% for p in cartelera %}
   <article class="movie-card">
     {% if p.poster_url %}
+<<<<<<< HEAD
     <div class="movie-poster" style="background-image:url('{{ p.poster_url }}')"></div>
     {% else %}
     <div class="movie-poster placeholder">
       <i class="fa fa-film"></i>
+=======
+    <div class="movie-poster" style="background-image:url('{{ p.poster_url }}')">
+      <div class="badge-genre">{{ p.genero }}</div>
+    </div>
+    {% else %}
+    <div class="movie-poster placeholder">
+      <i class="fa fa-film"></i>
+      <div class="badge-genre">{{ p.genero }}</div>
+>>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51
     </div>
     {% endif %}
     <div class="card-body">
       <h3 class="title" title="{{ p.titulo }}">{{ p.titulo }}</h3>
       <p class="meta">{{ p.clasificacion }} · {{ p.duracion_min }} min</p>
+<<<<<<< HEAD
      <div class="mb-2">
   <span style="background:#f5d060;color:#1a1a1a;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600;">{{ p.genero }}</span>
   {% if p.generos_extra %}
@@ -34,6 +45,8 @@
     {% endfor %}
   {% endif %}
 </div>
+=======
+>>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51
       <a href="{{ url_for('funciones_list') }}" class="btn btn-primary btn-sm w-100">
         <i class="fa fa-ticket"></i> Ver funciones
       </a>
@@ -45,7 +58,11 @@
 </div>
 
 <!-- Próximas funciones -->
+<<<<<<< HEAD
 <h2 class="section-title">Funciones disponibles</h2>
+=======
+<h2 class="section-title">Próximas funciones</h2>
+>>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51
 <div class="table-responsive">
   <table class="table table-hover align-middle">
     <thead><tr><th>Película</th><th>Sala</th><th>Fecha</th><th>Hora</th><th class="text-end">Tarifa</th><th></th></tr></thead>

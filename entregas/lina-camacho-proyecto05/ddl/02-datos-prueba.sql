@@ -7,6 +7,7 @@ INSERT INTO genero (nombre) VALUES
   ('Drama'),           -- 3
   ('Terror'),          -- 4
   ('Animación'),       -- 5
+<<<<<<< HEAD
   ('Ciencia ficción'), -- 6
   ('Aventura'),        -- 7
   ('Suspenso'),        -- 8
@@ -15,6 +16,9 @@ INSERT INTO genero (nombre) VALUES
   ('Biografía'),       -- 11
   ('Romance'),         -- 12
   ('Fantasía');        -- 13
+=======
+  ('Ciencia ficción'); -- 6
+>>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51
 
 INSERT INTO pelicula (titulo, id_genero, duracion_min, clasificacion, sinopsis, activa) VALUES
   ('Dunas del Tiempo',         6, 155, 'PG-13', 'Un viaje épico a través de mundos desérticos.', TRUE),
@@ -39,6 +43,7 @@ CROSS JOIN (SELECT 1 AS numero UNION SELECT 2 UNION SELECT 3 UNION SELECT 4
             UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8) n;
 
 INSERT INTO funcion (id_pelicula, id_sala, fecha, hora, tarifa) VALUES
+<<<<<<< HEAD
   -- ===== SALA 1 (2D) - 06-08 =====
   (5, 1, '2026-06-08', '12:00', 9000),   -- El Reino Animado
   (5, 1, '2026-06-08', '14:30', 9000),   -- El Reino Animado
@@ -92,6 +97,20 @@ INSERT INTO funcion (id_pelicula, id_sala, fecha, hora, tarifa) VALUES
   (3, 3, '2026-06-10', '15:30', 9000),   -- La Última Carta
   (7, 3, '2026-06-10', '18:30', 9000),   -- Corazón Valiente del Norte
   (7, 3, '2026-06-10', '21:30', 9000);   -- Corazón Valiente del Norte
+=======
+  (1, 1, '2026-06-05', '14:00', 9000),   -- 1
+  (2, 2, '2026-06-05', '16:00', 12000),  -- 2
+  (3, 3, '2026-06-05', '18:00', 9000),   -- 3
+  (4, 1, '2026-06-05', '20:00', 9000),   -- 4
+  (5, 2, '2026-06-06', '14:00', 12000),  -- 5
+  (6, 3, '2026-06-06', '16:00', 9000),   -- 6
+  (1, 1, '2026-06-06', '18:30', 9000),   -- 7
+  (7, 2, '2026-06-06', '21:00', 12000),  -- 8
+  (8, 3, '2026-06-07', '15:00', 9000),   -- 9
+  (2, 1, '2026-06-07', '17:00', 9000),   -- 10
+  (6, 2, '2026-06-07', '19:00', 12000),  -- 11
+  (4, 3, '2026-06-07', '22:00', 9000);   -- 12
+>>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51
 
 INSERT INTO cliente (nombre, documento, email, telefono) VALUES
   ('María Gómez',     '1001', 'maria.gomez@correo.com',  '3001112233'),
@@ -104,6 +123,7 @@ INSERT INTO cliente (nombre, documento, email, telefono) VALUES
   ('Andrés Rojas',    '1008', 'andres.rojas@correo.com', '3008889900');
 
 INSERT INTO venta (fecha_venta, id_cliente, total) VALUES
+<<<<<<< HEAD
   ('2026-06-08 13:30:00', 1, 0),
   ('2026-06-08 15:40:00', 2, 0),
   ('2026-06-08 17:45:00', 3, 0),
@@ -112,6 +132,16 @@ INSERT INTO venta (fecha_venta, id_cliente, total) VALUES
   ('2026-06-09 15:30:00', 6, 0),
   ('2026-06-09 18:00:00', NULL, 0),
   ('2026-06-09 20:30:00', NULL, 0);
+=======
+  ('2026-06-05 13:30:00', 1, 0),   -- 1
+  ('2026-06-05 15:40:00', 2, 0),   -- 2
+  ('2026-06-05 17:45:00', 3, 0),   -- 3
+  ('2026-06-05 19:50:00', 4, 0),   -- 4
+  ('2026-06-06 13:30:00', 5, 0),   -- 5
+  ('2026-06-06 15:30:00', 6, 0),   -- 6
+  ('2026-06-06 18:00:00', NULL, 0),-- 7 
+  ('2026-06-06 20:30:00', NULL, 0);-- 8 
+>>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51
 
 INSERT INTO boleto (id_venta, id_funcion, id_butaca, precio)
 SELECT f.rn, f.id_funcion, b.id_butaca, f.tarifa
