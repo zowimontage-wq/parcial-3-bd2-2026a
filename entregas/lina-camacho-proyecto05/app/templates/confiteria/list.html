@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Confitería{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+  <h1 class="display-6 fw-bold">Confitería</h1>
+  <p class="text-secondary">Elige tu combo y personalízalo a tu gusto.</p>
+</div>
+
+<h2 class="h4 border-bottom border-danger pb-2 mb-4">Listado de productos</h2>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+  {% for p in productos %}
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      {% if p.imagen_url %}
+      <img src="{{ p.imagen_url }}" class="card-img-top" alt="{{ p.nombre }}" style="object-fit:cover;height:200px">
+      {% else %}
+      <div class="card-img-top d-flex align-items-center justify-content-center bg-secondary" style="height:200px">
+        <i class="fa fa-popcorn fa-3x text-light"></i>
+      </div>
+      {% endif %}
+      <div class="card-footer bg-warning text-center fw-bold text-uppercase">{{ p.nombre }}</div>
+      <div class="card-body text-center">
+        <a href="{{ url_for('confiteria_detalle', id=p.id_producto) }}" class="btn btn-light fw-bold text-danger w-75">COMPRAR</a>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">No hay productos de confitería cargados.</p>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar' if pelicula else 'Nueva' }} película{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4">{{ 'Editar' if pelicula else 'Nueva' }} película</h1>
+
+<form method="post" class="row g-3" style="max-width:720px;">
+  <div class="col-12">
+    <label class="form-label">Título</label>
+    <input type="text" name="titulo" class="form-control" required
+           value="{{ pelicula.titulo if pelicula else '' }}">
+  </div>
+
+  <div class="col-md-6">
+    <label class="form-label">Género principal</label>
+    <select name="id_genero" class="form-select" required>
+      {% for g in generos %}
+      <option value="{{ g.id_genero }}"
+        {{ 'selected' if pelicula and pelicula.id_genero == g.id_genero }}>{{ g.nombre }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-md-6">
+    <label class="form-label">Géneros adicionales</label>
+    <div class="d-flex flex-wrap gap-2 mt-1">
+      {% set extras = pelicula.generos_extra.split(',') if pelicula and pelicula.generos_extra else [] %}
+      {% for g in generos %}
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="generos_extra"
+               value="{{ g.nombre }}" id="ge_{{ g.id_genero }}"
+               {{ 'checked' if g.nombre in extras }}>
+        <label class="form-check-label" for="ge_{{ g.id_genero }}">{{ g.nombre }}</label>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label">Duración (min)</label>
+    <input type="number" name="duracion_min" class="form-control" min="1" required
+           value="{{ pelicula.duracion_min if pelicula else '' }}">
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label">Clasificación</label>
+    <select name="clasificacion" class="form-select" required>
+      {% for c in clasificaciones %}
+      <option value="{{ c }}" {{ 'selected' if pelicula and pelicula.clasificacion == c }}>{{ c }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-12">
+    <label class="form-label">Sinopsis</label>
+    <textarea name="sinopsis" class="form-control" rows="3">{{ pelicula.sinopsis if pelicula else '' }}</textarea>
+  </div>
+
+  <div class="col-12">
+    <label class="form-label">URL del póster (opcional)</label>
+    <input type="text" name="poster_url" class="form-control"
+           value="{{ pelicula.poster_url if pelicula and pelicula.poster_url else '' }}">
+  </div>
+
+  <div class="col-12 form-check ms-2">
+    <input type="checkbox" name="activa" class="form-check-input" id="activa"
+           {{ 'checked' if (pelicula is none) or pelicula.activa }}>
+    <label class="form-check-label" for="activa">Película activa (en cartelera)</label>
+  </div>
+
+  <div class="col-12">
+    <button class="btn btn-primary">Guardar</button>
+    <a class="btn btn-link" href="{{ url_for('peliculas_list') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Nuevo cliente{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4">Nuevo cliente</h1>
+
+<form method="post" class="row g-3" style="max-width:560px;">
+  <div class="col-12">
+    <label class="form-label">Nombre</label>
+    <input type="text" name="nombre" class="form-control" required>
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">Documento</label>
+    <input type="text" name="documento" class="form-control">
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">Teléfono</label>
+    <input type="text" name="telefono" class="form-control">
+  </div>
+  <div class="col-12">
+    <label class="form-label">Email</label>
+    <input type="email" name="email" class="form-control">
+  </div>
+  <div class="col-12">
+    <button class="btn btn-primary">Guardar</button>
+    <a class="btn btn-link" href="{{ url_for('clientes_list') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

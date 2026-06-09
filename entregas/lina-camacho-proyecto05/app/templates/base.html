@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Inicio{% endblock %} · CinemasProject</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="cine-header">
+  <a href="{{ url_for('index') }}" class="logo">Cinemas<span>Project</span></a>
+  <nav class="nav-links">
+    <a href="{{ url_for('index') }}"><i class="fa fa-film"></i> Cartelera</a>
+    <a href="{{ url_for('peliculas_list') }}">Películas</a>
+    <a href="{{ url_for('salas_list') }}">Salas</a>
+    <a href="{{ url_for('funciones_list') }}">Funciones</a>
+    <a href="{{ url_for('clientes_list') }}">Clientes</a>
+    <a href="{{ url_for('confiteria') }}"><i class="fa fa-popcorn"></i> Confitería</a>
+    <a href="{{ url_for('reportes') }}">Reportes</a>
+    <a href="{{ url_for('carrito') }}"><i class="fa fa-cart-shopping"></i> Carrito
+      {% if carrito_count %}<span class="badge bg-danger">{{ carrito_count }}</span>{% endif %}
+    </a>
+  </nav>
+</header>
+
+<div class="container py-4">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, msg in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ msg }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</div>
+
+<footer class="cine-footer">
+  <p>Made with <i class="fa fa-heart" style="color:var(--color-red)"></i> para el Proyecto de Bases de Datos 2.</p>
+  <p>© 2026 CinemasProject · Todos los derechos reservados.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

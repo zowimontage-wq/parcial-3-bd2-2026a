@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Venta — {{ funcion.titulo }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 mb-0">Venta de boletos</h1>
+  <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('funciones_list') }}">← Funciones</a>
+</div>
+
+<div class="card mb-4"><div class="card-body">
+  <strong>{{ funcion.titulo }}</strong> &middot; {{ funcion.sala }} &middot;
+  {{ funcion.fecha }} &middot; Tarifa: ${{ '{:,.0f}'.format(funcion.tarifa) }}
+</div></div>
+
+<!-- Selector de hora estilo Procinal -->
+<div class="mb-4">
+  <h6 class="text-uppercase mb-2" style="color:var(--color-text-muted);letter-spacing:1px;">Selecciona una hora</h6>
+  <div class="d-flex flex-wrap gap-2">
+    {% for h in otras_horas %}
+    <a href="{{ url_for('funcion_venta', id=h.id_funcion) }}"
+       class="btn btn-sm {% if h.id_funcion == funcion.id_funcion %}btn-danger{% else %}btn-outline-secondary{% endif %}"
+       style="min-width:90px;">
+      {{ '%02d:%02d' % (h.hora.seconds // 3600, (h.hora.seconds % 3600) // 60) }}<br>
+      <small style="font-size:10px;">{{ h.sala }}</small>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<form method="post" id="form-venta">
+  <div class="mb-3" style="max-width:420px;">
+    <label class="form-label">Cliente (opcional)</label>
+    <select name="id_cliente" class="form-select">
+      <option value="">Ocasional (sin cliente)</option>
+      {% for c in clientes %}
+      <option value="{{ c.id_cliente }}">{{ c.nombre }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="screen mb-4">PANTALLA</div>
+  <div class="seat-map mb-3">
+    {% for fila, butacas in filas.items() %}
+    <div class="seat-row">
+      <span class="seat-row-label">{{ fila }}</span>
+      {% for b in butacas %}
+        {% if b.vendida %}
+        <span class="seat ocupada" title="{{ b.fila }}{{ b.numero }} (vendida)">{{ b.numero }}</span>
+        {% else %}
+        <label class="seat disponible" title="{{ b.fila }}{{ b.numero }}">
+          <input type="checkbox" name="butacas" value="{{ b.id_butaca }}" hidden>
+          {{ b.numero }}
+        </label>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="d-flex align-items-center gap-3 mb-3 small">
+    <span><span class="seat"></span> Disponible</span>
+    <span><span class="seat seleccionada"></span> Seleccionada</span>
+    <span><span class="seat ocupada"></span> Vendida</span>
+  </div>
+
+  <div class="alert alert-info">
+    Butacas seleccionadas: <strong id="cuenta">0</strong> &middot;
+    Total: <strong>$<span id="total">0</span></strong>
+  </div>
+
+  <button class="btn btn-success" type="submit">Confirmar venta</button>
+</form>
+
+<script>
+  const tarifa = {{ funcion.tarifa }};
+  const checks = document.querySelectorAll('.seat.disponible input');
+  checks.forEach(chk => chk.addEventListener('change', actualizar));
+
+  function actualizar() {
+    let n = 0;
+    checks.forEach(c => {
+      c.closest('label').classList.toggle('seleccionada', c.checked);
+      if (c.checked) n++;
+    });
+    document.getElementById('cuenta').textContent = n;
+    document.getElementById('total').textContent = (n * tarifa).toLocaleString();
+  }
+</script>
+{% endblock %}

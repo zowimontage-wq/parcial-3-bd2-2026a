@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Reportes{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4"><i class="fa fa-chart-simple"></i> Reportes</h1>
+
+<!-- Funciones más vendidas -->
+<div class="card mb-4">
+  <div class="card-header"><strong>Funciones más vendidas</strong></div>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle mb-0">
+      <thead>
+        <tr><th>Película</th><th>Sala</th><th>Fecha</th><th>Hora</th>
+            <th class="text-center">Ocupación</th><th class="text-end">Recaudado</th></tr>
+      </thead>
+      <tbody>
+        {% for f in mas_vendidas %}
+        <tr>
+          <td>{{ f.titulo }}</td>
+          <td>{{ f.sala }}</td>
+          <td>{{ f.fecha }}</td>
+          <td>{{ f.hora }}</td>
+          <td class="text-center">{{ f.boletos }} / {{ f.capacidad }}</td>
+          <td class="text-end">${{ '{:,.0f}'.format(f.recaudado) }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-center text-muted">Sin datos de ventas.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Recaudación por día -->
+  <div class="col-lg-7 mb-4">
+    <div class="card h-100">
+      <div class="card-header"><strong>Recaudación por día</strong></div>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0">
+          <thead>
+            <tr><th>Día</th><th class="text-center">Ventas</th>
+                <th class="text-center">Boletos</th><th class="text-end">Recaudado</th></tr>
+          </thead>
+          <tbody>
+            {% for d in recaudacion_dia %}
+            <tr>
+              <td>{{ d.dia }}</td>
+              <td class="text-center">{{ d.ventas }}</td>
+              <td class="text-center">{{ d.boletos }}</td>
+              <td class="text-end">${{ '{:,.0f}'.format(d.recaudado) }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-center text-muted">Sin ventas registradas.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top películas -->
+  <div class="col-lg-5 mb-4">
+    <div class="card h-100">
+      <div class="card-header"><strong>Películas más taquilleras</strong></div>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0">
+          <thead>
+            <tr><th>Película</th><th class="text-center">Boletos</th><th class="text-end">Recaudado</th></tr>
+          </thead>
+          <tbody>
+            {% for p in top_peliculas %}
+            <tr>
+              <td>{{ p.titulo }}</td>
+              <td class="text-center">{{ p.boletos }}</td>
+              <td class="text-end">${{ '{:,.0f}'.format(p.recaudado) }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3" class="text-center text-muted">Sin datos.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

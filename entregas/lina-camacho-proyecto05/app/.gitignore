@@ -1,0 +1,10 @@
+# Credenciales locales — NUNCA subir
+.env
+
+# Entorno virtual de Python
+venv/
+.venv/
+
+# Cache de Python
+__pycache__/
+*.pyc

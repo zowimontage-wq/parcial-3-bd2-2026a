@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: cine
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./ddl:/docker-entrypoint-initdb.d
+
+  web:
+    build: ./app
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: ""
+      DB_NAME: cine
+      SECRET_KEY: mi-clave-secreta-xyz
+    depends_on:
+      - db

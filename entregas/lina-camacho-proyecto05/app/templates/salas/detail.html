@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ sala.nombre }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">{{ sala.nombre }} <span class="badge bg-info text-dark">{{ sala.formato }}</span></h1>
+  <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('salas_list') }}">← Volver</a>
+</div>
+
+<div class="screen mb-4">PANTALLA</div>
+
+<div class="seat-map">
+  {% for fila, butacas in filas.items() %}
+  <div class="seat-row">
+    <span class="seat-row-label">{{ fila }}</span>
+    {% for b in butacas %}
+    <span class="seat" title="{{ b.fila }}{{ b.numero }}">{{ b.numero }}</span>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-muted">Esta sala no tiene butacas.</p>
+  {% endfor %}
+</div>
+{% endblock %}

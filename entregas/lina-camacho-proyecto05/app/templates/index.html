@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Cartelera{% endblock %}
+
+{% block content %}
+<!-- Panel de cifras -->
+<div class="row g-3 mb-5">
+  <div class="col-6 col-md"><div class="stat-card"><div class="num">{{ stats.peliculas }}</div><div class="lbl">Películas</div></div></div>
+  <div class="col-6 col-md"><div class="stat-card"><div class="num">{{ stats.salas }}</div><div class="lbl">Salas</div></div></div>
+  <div class="col-6 col-md"><div class="stat-card"><div class="num">{{ stats.funciones }}</div><div class="lbl">Funciones</div></div></div>
+  <div class="col-6 col-md"><div class="stat-card"><div class="num">{{ stats.boletos }}</div><div class="lbl">Boletos</div></div></div>
+  <div class="col-12 col-md"><div class="stat-card"><div class="num">${{ '{:,.0f}'.format(stats.recaudacion) }}</div><div class="lbl">Recaudación</div></div></div>
+</div>
+
+<!-- Cartelera -->
+<h2 class="section-title">Cartelera <span style="font-size:16px;font-weight:normal;color:var(--color-text-muted)">| Barrancabermeja</span></h2>
+<div class="movie-grid mb-5">
+  {% for p in cartelera %}
+  <article class="movie-card">
+    {% if p.poster_url %}
+    <div class="movie-poster" style="background-image:url('{{ p.poster_url }}')"></div>
+    {% else %}
+    <div class="movie-poster placeholder">
+      <i class="fa fa-film"></i>
+    </div>
+    {% endif %}
+    <div class="card-body">
+      <h3 class="title" title="{{ p.titulo }}">{{ p.titulo }}</h3>
+      <p class="meta">{{ p.clasificacion }} · {{ p.duracion_min }} min</p>
+     <div class="mb-2">
+  <span style="background:#f5d060;color:#1a1a1a;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600;">{{ p.genero }}</span>
+  {% if p.generos_extra %}
+    {% for ge in p.generos_extra.split(',') %}
+      <span style="background:#f5d060;color:#1a1a1a;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600;margin-left:4px;">{{ ge }}</span>
+    {% endfor %}
+  {% endif %}
+</div>
+      <a href="{{ url_for('funciones_list') }}" class="btn btn-primary btn-sm w-100">
+        <i class="fa fa-ticket"></i> Ver funciones
+      </a>
+    </div>
+  </article>
+  {% else %}
+  <p class="text-muted">No hay películas en cartelera.</p>
+  {% endfor %}
+</div>
+
+<!-- Próximas funciones -->
+<h2 class="section-title">Funciones disponibles</h2>
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead><tr><th>Película</th><th>Sala</th><th>Fecha</th><th>Hora</th><th class="text-end">Tarifa</th><th></th></tr></thead>
+    <tbody>
+      {% for f in proximas %}
+      <tr>
+        <td>{{ f.titulo }}</td>
+        <td>{{ f.sala }}</td>
+        <td>{{ f.fecha }}</td>
+        <td>{{ f.hora }}</td>
+        <td class="text-end">${{ '{:,.0f}'.format(f.tarifa) }}</td>
+        <td class="text-end"><a class="btn btn-sm btn-success" href="{{ url_for('funcion_venta', id=f.id_funcion) }}">Vender</a></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="text-center text-muted">No hay funciones programadas.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
