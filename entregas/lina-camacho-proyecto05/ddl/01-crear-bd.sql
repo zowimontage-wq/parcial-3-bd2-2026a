@@ -8,10 +8,6 @@ CREATE TABLE genero (
   id_genero  INT AUTO_INCREMENT PRIMARY KEY,
   nombre     VARCHAR(50) NOT NULL UNIQUE
 ) ENGINE=InnoDB;
-<<<<<<< HEAD
-=======
-
->>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51
 CREATE TABLE pelicula (
   id_pelicula   INT AUTO_INCREMENT PRIMARY KEY,
   titulo        VARCHAR(150) NOT NULL,
@@ -21,10 +17,7 @@ CREATE TABLE pelicula (
   sinopsis      TEXT,
   poster_url    VARCHAR(255),
   activa        BOOLEAN NOT NULL DEFAULT TRUE,
-<<<<<<< HEAD
   generos_extra VARCHAR(200) NOT NULL DEFAULT '',
-=======
->>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51
   CONSTRAINT fk_pelicula_genero FOREIGN KEY (id_genero) REFERENCES genero(id_genero),
   CONSTRAINT chk_duracion CHECK (duracion_min > 0),
   CONSTRAINT chk_clasificacion CHECK (clasificacion IN ('G','PG','PG-13','R','C','TP','12','15','18'))
@@ -103,8 +96,4 @@ BEGIN
       SET MESSAGE_TEXT = 'La butaca no pertenece a la sala de la función';
   END IF;
 END//
-<<<<<<< HEAD
 DELIMITER ; ALTER TABLE pelicula ADD COLUMN generos_extra VARCHAR(200) NOT NULL DEFAULT '';
-=======
-DELIMITER ;
->>>>>>> 48923d9e92c0b35f0a8e21b911ca9e179b30be51
